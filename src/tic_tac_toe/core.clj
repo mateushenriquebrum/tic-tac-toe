@@ -34,8 +34,6 @@
 (defn play-in-board [board player cords]
   (assoc-in board cords player))
 
-(def moves [[1 [0 0]] [1 [0 1]] [1 [0 2]] [2 [1 0]] [2 [1 1]]])
-
 ;; (reduce (fn [board [player cords]]
 ;;           (let [winner? (winner-in-board? board)]
 ;;             (if (> winner? 0)
@@ -54,4 +52,4 @@
        :board board}
       (recur (play-in-board board player cords) (rest moves)))))
 
-(play initial-board moves)
+;(play initial-board moves)

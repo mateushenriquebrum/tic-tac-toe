@@ -42,3 +42,8 @@
                  [2 1 1]
                  [2 1 2]]]
       (is (= 0 (winner-in-board? board))))))
+
+(deftest play-and-winner 
+  (testing "Sequence of moves resuting in a winner")
+  (let [moves [[1 [0 0]] [1 [0 1]] [1 [0 2]] [2 [1 0]] [2 [1 1]]]]
+    (is (=  1 (:winner (play initial-board moves))))))
