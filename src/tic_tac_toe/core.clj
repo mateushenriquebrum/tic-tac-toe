@@ -34,12 +34,12 @@
 (defn play-in-board [board player cords]
   (assoc-in board cords player))
 
-(defn play [board moves]
-  (let [winner? (winner-in-board? board)
-        next-move (first moves)
-        player (first next-move)
-        cords (second next-move)]
-    (if (> winner? 0)
-      {:winner winner?
-       :board board}
-      (recur (play-in-board board player cords) (rest moves)))))
+;; (defn play [board moves]
+;;   (let [winner? (winner-in-board? board)
+;;         next-move (first moves)
+;;         player (first next-move)
+;;         cords (second next-move)]
+;;     (if (> winner? 0)
+;;       {:winner winner?
+;;        :board board}
+;;       (recur (play-in-board board player cords) (rest moves)))))
