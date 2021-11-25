@@ -1,6 +1,6 @@
-# tic-toc
+# tic-tac-to
 
-FIXME: description
+Tic-tac-toe game in clojure
 
 ## Installation
 
@@ -10,7 +10,7 @@ Download from http://example.com/FIXME.
 
 FIXME: explanation
 
-    $ java -jar tic-toc-0.1.0-standalone.jar [args]
+    $ java -jar tic-tac-toe-0.1.0-standalone.jar
 
 ## Options
 
