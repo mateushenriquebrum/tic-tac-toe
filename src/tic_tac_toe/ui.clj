@@ -13,12 +13,13 @@
 (defn read-cord []
   (map #(Integer/parseInt %) (string/split (read-line) #" ")))
 
-(defn start-tic-toc-toe [board player]
-  (println (turn-of player))
+(defn start-tic-toc-toe [board player] 
   (println (board-ui board))
+  (println (turn-of player))
   (let [winner? (winner-in-board? board)
-        cords (read-cord)]
+        cords (read-cord)]    
     (if (> winner? 0)
       {:winner winner?
        :board board}
-      (recur (play-in-board board player cords) (if (= 1 player) 2 1)))))
+      (do                
+        (recur (play-in-board board player cords) (if (= 1 player) 2 1))))))
