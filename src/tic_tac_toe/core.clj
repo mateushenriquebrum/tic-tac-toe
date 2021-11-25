@@ -34,14 +34,6 @@
 (defn play-in-board [board player cords]
   (assoc-in board cords player))
 
-;; (reduce (fn [board [player cords]]
-;;           (let [winner? (winner-in-board? board)]
-;;             (if (> winner? 0)
-;;               board
-;;               (play-in-board board player cords))))
-;;         initial-board
-;;         moves)
-
 (defn play [board moves]
   (let [winner? (winner-in-board? board)
         next-move (first moves)
@@ -51,5 +43,3 @@
       {:winner winner?
        :board board}
       (recur (play-in-board board player cords) (rest moves)))))
-
-;(play initial-board moves)
