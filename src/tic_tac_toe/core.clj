@@ -1,8 +1,6 @@
 (ns tic-tac-toe.core
   (:gen-class))
 
-(defn -main [& args])
-
 (def initial-board
   (vec (repeat 3
                (vec (repeat 3 0)))))
@@ -21,8 +19,8 @@
                [[0 2] [1 1] [2 0]]]]
     (map (partial line board) cords)))
 
-(defn winner? [marks]
-  (let [tries (apply * marks)]
+(defn winner? [line]
+  (let [tries (apply * line)]
     (cond
       (= tries 1) 1
       (= tries 8) 2

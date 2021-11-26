@@ -1,0 +1,84 @@
+Simple Tic-Tac-Toe in Clojure.
+
+Well, just decided to give Clojure a try, it is an awesome programming language with loads of smart people in the comunity.
+After read the Joy Of Clojure I had some "boom moments", I am kind realising we have being doing software the wrong and hard way, state, database, ORM and all those kind of parapherlenia is there more to complicate than help, so lets try new ideas.
+As the first toy project, I started a simple tic-tac-toe, so lets review it.
+
+The first step was to thing in a smart way to keep the core out of any UI (even it been a console).
+First I had to define how represent the board, that was simple, something like:
+
+(def initial-board
+  (vec (repeat 3
+               (vec (repeat 3 0)))))
+
+=> [[0 0 0]
+    [0 0 0]
+    [0 0 0]]
+
+Then I had to find a way to define sequence of lines whose player is considered a winner.
+
+(defn line [board cords]
+  (vec (map #(get-in board %) cords)))
+
+(defn lines [board]
+  (let [cords [[[0 0] [0 1] [0 2]]
+               [[1 0] [1 1] [1 2]]
+               [[2 0] [2 1] [2 2]]
+               [[0 0] [1 0] [2 0]]
+               [[0 1] [1 1] [2 1]]
+               [[0 2] [1 2] [2 2]]
+               [[0 0] [1 1] [2 2]]
+               [[0 2] [1 1] [2 0]]]]
+    (map (partial line board) cords)))
+
+    Quite verbose method, but it states every tuple position that form a winner sequence, vertical, horizontal and diagonal.
+
+    Next we need to calculate within a line if there is some winned eg:
+    [1 1 1] => winner is play 1
+    [1 0 2] => no winner
+    [2 2 2] => winner is play 2
+
+    Besides many alternatives I decided to use the product for such:
+    [1 * 1 * 1] => 1
+    [1 * 0 * 2] => 0
+    [2 * 2 * 2] => 8
+
+(defn winner? [line]
+  (let [tries (apply * line)]
+    (cond
+      (= tries 1) 1
+      (= tries 8) 2
+      :else 0)))
+
+Then given a board, we can define if there is a winner, simple by put it all togheter.
+
+(defn winner-in-board? [board]
+  (reduce + (map winner? (lines board))))
+
+    
+Cool, but the above method just verify if there is a winner in a immutable board, how should we derive to the next status?
+We can simple, associate a new status for the board, something like this:
+
+(defn play-in-board [board player cords]
+  (assoc-in board cords player))
+
+(def board [[0 0 0] [0 0 0] [0 0 0]])
+(play-in-board [board 1 [1 1]]) => [[0 0 0] [0 1 0] [0 0 0]]
+
+That is the new board state.
+But things happend in moviment, right? We need to get the new state and use as the old one to create a new state and goes one.
+I have considered many strategies, reduce, map, loop, etc. The easest one was recursion.
+
+(defn start-tic-toc-toe [board player position] 
+  (let [winner? (winner-in-board? board)
+        cords (position)]    
+    (if (> winner? 0)
+      (board-print (str "Player " winner? " won!"))
+      (recur (play-in-board board player cords) (if (= 1 player) 2 1) position))))
+
+It init with a board (empty one), the player and the position, verify a winner, extract cords from position (that is a read-line), then in case there is no winner call itself again with the new variation of the board.
+With this strategy you keep the core and the UI separatetly, notice that position is a function that is triger every time in let scope.
+This is not a easealy testable method, but we will address this issue later on.
+
+I hope I have convinced you that functional language is ease to rationale and compose.
+Seya....
